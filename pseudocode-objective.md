@@ -38,10 +38,11 @@ pull agency and route on load
 https://svc.metrotransit.org/nextripv2/agencies
 https://svc.metrotransit.org/nextripv2/routes
 
-put those options into an arrays
-loops / props array items displayed into buttons / list items for select box options
+put those options into an arrays -- Done
 
-PRESS BUTTON
+loops / props array items displayed into buttons / list items for select box options <-
+
+select filter agentID to get route results
 
 AFTER those are selected run API for directions of route
 load checkbox for loaded response (direction), direction_id - direction_name
