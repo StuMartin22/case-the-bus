@@ -6,6 +6,7 @@ const routeAPI = `https://svc.metrotransit.org/nextripv2/routes`
 const dropDown = document.getElementById('inputGroupSelect01')
 const dropDown2 = document.getElementById('inputGroupSelect02')
 const dropDown3 = document.getElementById('inputGroupSelect03')
+const dropDown4 = document.getElementById('inputGroupSelect04')
 
 
 // Declaring global variables
@@ -21,7 +22,8 @@ let directionChoice = []
 
 dropDown.addEventListener('change', selectAgency)
 dropDown2.addEventListener('change', selectDirection)
-// dropdown3.addEventListener('change'), selectStop)
+dropDown3.addEventListener('change', selectStop)
+dropDown4.addEventListener('change',getPlaceDepartureInfo)
 
 function getAgenciesList() {
     // Requests agency data from API and returns response in JSON
@@ -69,7 +71,6 @@ function selectDirection(e){
 
 function directionLoop(directionChoice){
     for (i=0; i < directionChoice.length; i++){
-        console.log(directionChoice)
         let option = document.createElement('option')
         option.textContent = directionChoice[i].direction_name
         option.setAttribute('value',directionChoice[i].direction_id)
@@ -91,21 +92,19 @@ function toggleBox2() {
     }
   };
 
-  function toggleBox3() {
+function toggleBox3() {
     // Declares var x as selecting HTML element selectBox3
     var x = document.getElementById("selectBox3");
     // If routeID var set by selectDirection value is null
     if (routeID !== "null") {
     // SelectBox3 CSS styling will be set to visible
-      x.style.visibility = "visible";
+        x.style.visibility = "visible";
     // If not null
     } else {
     // Set to hidden
-      x.style.visibility = "hidden";
+        x.style.visibility = "hidden";
     }
-  };
-
-// 0 1 2 3 4 5 6 10 11 15 -- transit agency ID numbers
+};
 
 function getRoutes() {
     // Requests route data from API and returns response in JSON
@@ -130,6 +129,54 @@ function filterRoutesByAgency(agentID){
         // appends the created option var to the dropDown2 element
         dropDown2.appendChild(option)
         }}
+
+function selectStop(e){
+    stopChoice = []
+    stopID = e.target.value
+    console.log(stopID)
+    const stopsAPI = `https://svc.metrotransit.org/nextripv2/stops/${routeID}/${stopID}`
+    fetch (stopsAPI)
+    .then((response) => response.json())
+    .then ((data) => {stopChoice = data
+    stopsLoop(stopChoice);
+    toggleBox4();}
+    )};
+
+function stopsLoop(stopChoice){
+    for (i=0; i < stopChoice.length; i++){
+        let option = document.createElement('option')
+        option.textContent = stopChoice[i].description
+        option.setAttribute('value',stopChoice[i].place_code)
+        dropDown4.appendChild(option)
+    }
+};
+
+function toggleBox4() {
+    // Declares var x as selecting HTML element selectBox3
+    var x = document.getElementById("selectBox4");
+    // If routeID var set by selectDirection value is null
+    if (stopID !== "null") {
+    // SelectBox3 CSS styling will be set to visible
+        x.style.visibility = "visible";
+    // If not null
+    } else {
+    // Set to hidden
+        x.style.visibility = "hidden";
+    }
+};
+
+function getPlaceDepartureInfo(e){
+    placeChoice = []
+    placeID = e.target.value
+    console.log(placeID)
+    const placeAPI = `https://svc.metrotransit.org/nextripv2/${routeID}/${stopID}/${placeID}`
+    fetch (placeAPI)
+    .then((response) => response.json())
+    .then ((data) => {placeChoice = data
+    stopsLoop(placeChoice);
+    console.log(placeChoice)
+    // toggleBox5();}
+    })};
 
 // Call functions
 getAgenciesList();
