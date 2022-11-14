@@ -2,21 +2,26 @@
 const agencyAPI = `https://svc.metrotransit.org/nextripv2/agencies`
 const routeAPI = `https://svc.metrotransit.org/nextripv2/routes`
 
-// dropDown and dropDown2 are selecting HTML elements by ID. dropDown being box 1 and dropDown2 box 2
+// dropDown[i] are selecting HTML elements by ID.
 const dropDown = document.getElementById('inputGroupSelect01')
 const dropDown2 = document.getElementById('inputGroupSelect02')
+const dropDown3 = document.getElementById('inputGroupSelect03')
 
 
-// Declaring variables
+// Declaring global variables
 let agencyList
 let transitRoutes = []
 let filteredRoutes = []
 let agentID = null
+let routeID = null
+let directionChoice = []
 
 
 // TODO: Remove console logs
 
 dropDown.addEventListener('change', selectAgency)
+dropDown2.addEventListener('change', selectDirection)
+// dropdown3.addEventListener('change'), selectStop)
 
 function getAgenciesList() {
     // Requests agency data from API and returns response in JSON
@@ -49,6 +54,29 @@ function selectAgency(e){
     filterRoutesByAgency(agentID)
 }
 
+function selectDirection(e){
+    directionChoice = []
+    routeID = e.target.value
+    console.log(routeID)
+    const directionAPI = `https://svc.metrotransit.org/nextripv2/directions/${routeID}`
+    fetch (directionAPI)
+    .then((response) => response.json())
+    .then ((data) => {directionChoice = data
+    directionLoop(directionChoice);
+    toggleBox3();}
+    )};
+
+
+function directionLoop(directionChoice){
+    for (i=0; i < directionChoice.length; i++){
+        console.log(directionChoice)
+        let option = document.createElement('option')
+        option.textContent = directionChoice[i].direction_name
+        option.setAttribute('value',directionChoice[i].direction_id)
+        dropDown3.appendChild(option)
+    }
+};
+
 function toggleBox2() {
     // Declares var x as selecting HTML element selectBox2
     var x = document.getElementById("selectBox2");
@@ -61,7 +89,21 @@ function toggleBox2() {
     // Set to hidden
       x.style.visibility = "hidden";
     }
-  }
+  };
+
+  function toggleBox3() {
+    // Declares var x as selecting HTML element selectBox3
+    var x = document.getElementById("selectBox3");
+    // If routeID var set by selectDirection value is null
+    if (routeID !== "null") {
+    // SelectBox3 CSS styling will be set to visible
+      x.style.visibility = "visible";
+    // If not null
+    } else {
+    // Set to hidden
+      x.style.visibility = "hidden";
+    }
+  };
 
 // 0 1 2 3 4 5 6 10 11 15 -- transit agency ID numbers
 
@@ -74,6 +116,7 @@ function getRoutes() {
             })};
 
 function filterRoutesByAgency(agentID){
+        filteredRoutes = []
     // Sets filteredRoutes array equal to filtered results from transitRoutes where agency_id is eq to agentID var set in selectAgency function
     filteredRoutes = transitRoutes.filter(event => event.agency_id == agentID)
     // Loops through filteredRoutes array
