@@ -89,6 +89,10 @@ Case Study of Bus Line Timings
   ---
   
   <h1 align="center"id="current">Current Production State</h1>
+
+  <h1 align="center">Live Link</h1>
+  
+  <p align="center"><a href="https://stumartin22.github.io/case-the-bus/">Live Link Here!</a></p>
   
   <h1 align="center">Repository for Project</h1>
   
