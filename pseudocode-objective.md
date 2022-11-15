@@ -44,18 +44,25 @@ loops / props array items displayed into buttons / list items for select box opt
 
 select filter agentID to get route results -- Done
 
-AFTER those are selected run API for directions of route
-load checkbox for loaded response (direction), direction_id - direction_name
+AFTER those are selected run API for directions of route -- done
+load checkbox for loaded response (direction), direction_id - direction_name -- done
 
-AFTER SELECTED
+AFTER SELECTED -- done
 
-Load STOPS loop thru for checkbox options
+Load STOPS loop thru for checkbox options -- done
 
-AFTER stop is selected:
+AFTER stop is selected: -- done
 
-Find local time, compare to departure text
+Find local time, compare to departure text <- comparison not needed, API gives departure time
 
-if results then display 
-if no results then display 'no results'
+if results then display <- done
+if no results then display 'no results' <- in progress
 
+Wishlist: 
+1) better scaling / positioning / general styling of UI
+2) able to search point A to point B instead of needing route and direction, but thats API limitation. Could rewrite queries if internal database but for this activity this met all the check-marks but still had some extra stuff.
+3) More / improved conditionals. Desire for UX to be as high as possible.
+4) refactor and make code drier if possible. Acceptable with where its at but never hurts.
+5) rename variables, functions, elements better. 
+6) Better Accessibility features.
 
